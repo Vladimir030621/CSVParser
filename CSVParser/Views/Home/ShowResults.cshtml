@@ -1,0 +1,9 @@
+﻿@model InputFile
+
+<form asp-action="ShowResults" enctype="multipart/form-data">
+
+    <input asp-for="Uploadedfile" />
+    <span asp-validation-for="Uploadedfile"></span>
+
+    <input type="submit" />
+</form>
