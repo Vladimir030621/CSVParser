@@ -1,22 +1,101 @@
 ﻿@model List<EmployeeViewModel>
 
-<div class="text-center">
-    <table>
-        @foreach (var employee in Model)
-        {
-            <tr>
-                <td>@employee.PayrollNumber</td>
-                <td>@employee.Name</td>
-                <td>@employee.Surname</td>
-                <td>@employee.DateOfBirth.ToString("dd/MM/yyyy")</td>
-                <td>@employee.Telephone</td>
-                <td>@employee.Mobile</td>
-                <td>@employee.Address</td>
-                <td>@employee.Address2</td>
-                <td>@employee.Postcode</td>
-                <td>@employee.StartDate.ToString("dd/MM/yyyy")</td>
-            </tr>
-        }
+    <input type="text" id="search" placeholder="Type to search">
+    <br />
 
-    </table>
-</div>
+    <div class="text-center">
+        <table id="myTable">
+            <tr>
+                <th onclick="sortTable(0)">PayrollNumber</th>
+                <th onclick="sortTable(1)">Name</th>
+                <th onclick="sortTable(2)">Surname</th>
+                <th onclick="sortTable(3)">DateOfBirth</th>
+                <th onclick="sortTable(4)">Telephone</th>
+                <th onclick="sortTable(5)">Mobile</th>
+                <th onclick="sortTable(6)">Address</th>
+                <th onclick="sortTable(7)">Address2</th>
+                <th onclick="sortTable(8)">Postcode</th>
+                <th onclick="sortTable(9)">Email</th>
+                <th onclick="sortTable(10)">StartDate</th>
+
+            </tr>
+            @foreach (var employee in Model)
+            {
+                <tr>
+                    <td>@employee.PayrollNumber</td>
+                    <td>@employee.Name</td>
+                    <td>@employee.Surname</td>
+                    <td>@employee.DateOfBirth.ToString("dd/MM/yyyy")</td>
+                    <td>@employee.Telephone</td>
+                    <td>@employee.Mobile</td>
+                    <td>@employee.Address</td>
+                    <td>@employee.Address2</td>
+                    <td>@employee.Postcode</td>
+                    <td>@employee.Email</td>
+                    <td>@employee.StartDate.ToString("dd/MM/yyyy")</td>
+                </tr>
+            }
+
+        </table>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-2.1.0.js"></script>
+
+    <script>
+        function sortTable(n) {
+            var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+            table = document.getElementById("myTable");
+            switching = true;
+            
+            dir = "asc";
+           
+            while (switching) {
+                
+                switching = false;
+                rows = table.rows;
+                
+                for (i = 1; i < (rows.length - 1); i++) {
+                    
+                    shouldSwitch = false;
+                    
+                    x = rows[i].getElementsByTagName("TD")[n];
+                    y = rows[i + 1].getElementsByTagName("TD")[n];
+                    
+                    if (dir == "asc") {
+                        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    } else if (dir == "desc") {
+                        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                            shouldSwitch = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (shouldSwitch) {
+                    rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                    switching = true;
+                    switchcount++;
+                } else {
+                    if (switchcount == 0 && dir == "asc") {
+                        dir = "desc";
+                        switching = true;
+                    }
+                }
+            }
+        }
+    </script>
+
+    <script>
+        var $rows = $('#myTable tr');
+        $('#search').keyup(function () {
+            var val = $.trim($(this).val()).replace(/ +/g, ' ').toLowerCase();
+
+            $rows.show().filter(function () {
+                var text = $(this).text().replace(/\s+/g, ' ').toLowerCase();
+                return !~text.indexOf(val);
+            }).hide();
+        });
+    </script>

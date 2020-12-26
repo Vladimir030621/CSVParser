@@ -40,7 +40,7 @@ namespace CSVParser.Controllers
 
             var engine = new FileHelperEngine<EmployeeViewModel>();
 
-            var result = engine.ReadFile(filePath).ToList();
+            var result = engine.ReadFile(filePath).OrderBy(r => r.Surname).ToList();
 
             SaveResults(result);
 
