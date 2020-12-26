@@ -1,23 +1,10 @@
-﻿
-@model List<EmployeeViewModel>
+﻿@model InputFile
 
-<div class="text-center">
-    <table>
-        @foreach (var employee in Model)
-        {
-            <tr>
-                <td>@employee.PayrollNumber</td>
-                <td>@employee.Name</td>
-                <td>@employee.Surname</td>
-                <td>@employee.DateOfBirth.ToString("dd/MM/yyyy")</td>
-                <td>@employee.Telephone</td>
-                <td>@employee.Mobile</td>
-                <td>@employee.Address</td>
-                <td>@employee.Address2</td>
-                <td>@employee.Postcode</td>
-                <td>@employee.StartDate.ToString("dd/MM/yyyy")</td>
-            </tr>
-        }
+<form asp-action="Index" enctype="multipart/form-data">
 
-    </table>
-</div>
+    <input asp-for="Uploadedfile" />
+    <span asp-validation-for="Uploadedfile"></span>
+
+    <input type="submit" />
+</form>
+

@@ -1,4 +1,5 @@
-﻿using CSVParser.Models;
+﻿using CSVParser.Domain.Interfaces;
+using CSVParser.Models;
 using CSVParser.ViewModels;
 using FileHelpers;
 using Microsoft.AspNetCore.Hosting;
@@ -13,20 +14,22 @@ namespace CSVParser.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IEmployeeRepository context;
         private readonly IHostingEnvironment hostingEnvironment;
 
-        public HomeController(IHostingEnvironment environment)
+        public HomeController(IHostingEnvironment environment, IEmployeeRepository context)
         {
             hostingEnvironment = environment;
+            this.context = context;
         }
 
-        public IActionResult ShowResults()
+        public IActionResult Index()
         {
             return View(new InputFile());
         }
 
         [HttpPost]
-        public IActionResult ShowResults(InputFile model)
+        public IActionResult Index(InputFile model)
         {
             string filePath = "";
 
@@ -39,13 +42,36 @@ namespace CSVParser.Controllers
 
             var result = engine.ReadFile(filePath).ToList();
 
-            return View("Index", result);
+            SaveResults(result);
+
+            return View("ShowResults", result);
         }
 
 
-        public IActionResult Index()
+        public IActionResult ShowResults()
         {
             return View();
+        }
+
+        private void SaveResults(List<EmployeeViewModel> employeeViewModels)
+        {
+            foreach(var employee in employeeViewModels)
+            {
+                Employee currentEmployee = new Employee();
+                currentEmployee.PayrollNumber = employee.PayrollNumber;
+                currentEmployee.Name = employee.Name;
+                currentEmployee.Surname = employee.Surname;
+                currentEmployee.DateOfBirth = employee.DateOfBirth;
+                currentEmployee.Telephone = employee.Telephone;
+                currentEmployee.Mobile = employee.Mobile;
+                currentEmployee.Address = employee.Address;
+                currentEmployee.Address2 = employee.Address2;
+                currentEmployee.Postcode = employee.Postcode;
+                currentEmployee.Email = employee.Email;
+                currentEmployee.StartDate = employee.StartDate;
+
+                context.SaveEmployee(currentEmployee);
+            }
         }
 
         private string SaveUploadedFile(InputFile model)
