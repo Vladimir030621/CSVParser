@@ -1,6 +1,5 @@
 ﻿using CSVParser.Domain.Interfaces;
 using CSVParser.Models;
-using CSVParser.ViewModels;
 using FileHelpers;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -9,7 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Xamarin.Forms;
+
 
 namespace CSVParser.Controllers
 {
@@ -69,7 +68,7 @@ namespace CSVParser.Controllers
 
         public IActionResult Edit(int? id)
         {
-            if (id != null)
+            if (id > 0)
             {
                 var employee = context.GetEmployees().FirstOrDefault(e => e.Id == id);
 
@@ -84,14 +83,23 @@ namespace CSVParser.Controllers
         [HttpPost]
         public IActionResult Edit(Employee employee)
         {
-            context.UpdateEmployee(employee);
+            List<Employee> result = new List<Employee>();
 
-            var employees = context.GetEmployees();
+            if(employee != null)
+            {
+                context.UpdateEmployee(employee);
 
-            var result = employees
-                .Skip(employees.Count() - countOfParsedEmployees)
-                .Take(countOfParsedEmployees)
-                .ToList();
+                var employees = context.GetEmployees();
+
+                result = employees
+                    .Skip(employees.Count() - countOfParsedEmployees)
+                    .Take(countOfParsedEmployees)
+                    .ToList();
+            }
+            else
+            {
+                return NotFound();
+            }
            
             return View("ShowResults", result);
         }

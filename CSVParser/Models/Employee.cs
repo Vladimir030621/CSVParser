@@ -1,5 +1,4 @@
-﻿using FileHelpers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,8 +7,6 @@ using System.Threading.Tasks;
 
 namespace CSVParser.Models
 {
-    [DelimitedRecord(",")]
-    [IgnoreFirst]
     public class Employee
     {
         public int Id { get; set; }
@@ -24,7 +21,6 @@ namespace CSVParser.Models
 
         [Required(ErrorMessage = "Enter a new day of birth")]
         [Column(TypeName = "datetime2")]
-        [FieldConverter(ConverterKind.Date, "dd/MM/yyyy")]
         public DateTime DateOfBirth { get; set; }
 
         [Required(ErrorMessage = "Enter a new telephone number")]
@@ -51,7 +47,6 @@ namespace CSVParser.Models
         [Required(ErrorMessage = "Enter a new start date")]
         [DataType(DataType.DateTime)]
         [Column(TypeName = "datetime2")]
-        [FieldConverter(ConverterKind.Date, "dd/MM/yyyy")]
         public DateTime StartDate { get; set; }
     }
 }
