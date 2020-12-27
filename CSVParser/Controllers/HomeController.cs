@@ -59,12 +59,10 @@ namespace CSVParser.Controllers
             return View("ShowResults", result);
         }
 
-
         public IActionResult ShowResults()
         {
             return View();
         }
-
 
         public IActionResult Edit(int? id)
         {
@@ -104,7 +102,13 @@ namespace CSVParser.Controllers
             return View("ShowResults", result);
         }
 
+        #region Save results in DB
 
+        /// <summary>
+        /// Save parsed results in DB
+        /// </summary>
+        /// <param name="employeeViewModels"></param>
+        /// <returns></returns>
         private List<Employee> SaveResults(List<EmployeeViewModel> employeeViewModels)
         {
             var result = new List<Employee>();
@@ -131,6 +135,14 @@ namespace CSVParser.Controllers
             return result;
         }
 
+        #endregion
+
+        #region Save input csv file
+        /// <summary>
+        /// Save input csv file
+        /// </summary>
+        /// <param name="inputFile"></param>
+        /// <returns></returns>
         private string SaveUploadedFile(InputFile inputFile)
         {
             var uniqueFileName = GetUniqueFileName(inputFile.Uploadedfile.FileName);
@@ -148,6 +160,13 @@ namespace CSVParser.Controllers
             return filePath;
         }
 
+        #endregion
+
+        #region Delete csv file
+        /// <summary>
+        /// Delete csv file
+        /// </summary>
+        /// <param name="filePath"></param>
         private void DeleteUploadedFile(string filePath)
         {
             FileInfo fileInfo = new FileInfo(filePath);
@@ -158,6 +177,14 @@ namespace CSVParser.Controllers
             }
         }
 
+        #endregion
+
+        #region Create a unique name for input file
+        /// <summary>
+        /// Create a unique name for input file
+        /// </summary>
+        /// <param name="fileName"></param>
+        /// <returns></returns>
         private string GetUniqueFileName(string fileName)
         {
             fileName = Path.GetFileName(fileName);
@@ -167,5 +194,7 @@ namespace CSVParser.Controllers
                       + Guid.NewGuid().ToString().Substring(0, 4)
                       + Path.GetExtension(fileName);
         }
+
+        #endregion
     }
 }
