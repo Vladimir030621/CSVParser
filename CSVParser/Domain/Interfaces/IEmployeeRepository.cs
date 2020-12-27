@@ -11,5 +11,7 @@ namespace CSVParser.Domain.Interfaces
         IEnumerable<Employee> GetEmployees();
 
         void SaveEmployee(Employee employee);
+
+        void UpdateEmployee(Employee employee);
     }
 }

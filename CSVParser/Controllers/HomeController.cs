@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Xamarin.Forms;
 
 namespace CSVParser.Controllers
 {
@@ -16,7 +17,8 @@ namespace CSVParser.Controllers
     {
         private readonly IEmployeeRepository context;
         private readonly IHostingEnvironment hostingEnvironment;
-
+        private static int count;
+        
         public HomeController(IHostingEnvironment environment, IEmployeeRepository context)
         {
             hostingEnvironment = environment;
@@ -42,9 +44,13 @@ namespace CSVParser.Controllers
 
             var result = engine.ReadFile(filePath).OrderBy(r => r.Surname).ToList();
 
-            SaveResults(result);
+            var employees = SaveResults(result);
 
-            return View("ShowResults", result);
+            ViewData["count"] = employees.Count();
+
+            count = employees.Count();
+
+            return View("ShowResults", employees);
         }
 
 
@@ -53,8 +59,37 @@ namespace CSVParser.Controllers
             return View();
         }
 
-        private void SaveResults(List<EmployeeViewModel> employeeViewModels)
+
+        public IActionResult Edit(int? id)
         {
+            if (id != null)
+            {
+                var employee = context.GetEmployees().FirstOrDefault(e => e.Id == id);
+                if (employee != null)
+                {
+                    return View(employee);
+                }          
+            }
+            return NotFound();
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Employee employee)
+        {
+            context.UpdateEmployee(employee);
+
+            var employees = context.GetEmployees();
+
+            var result = employees.Skip(employees.Count() - count).Take(count).ToList();
+           
+            return View("ShowResults", result);
+        }
+
+
+        private List<Employee> SaveResults(List<EmployeeViewModel> employeeViewModels)
+        {
+            var result = new List<Employee>();
+
             foreach(var employee in employeeViewModels)
             {
                 Employee currentEmployee = new Employee();
@@ -70,8 +105,11 @@ namespace CSVParser.Controllers
                 currentEmployee.Email = employee.Email;
                 currentEmployee.StartDate = employee.StartDate;
 
+                result.Add(currentEmployee);
                 context.SaveEmployee(currentEmployee);
             }
+
+            return result;
         }
 
         private string SaveUploadedFile(InputFile model)

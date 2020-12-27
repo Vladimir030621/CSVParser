@@ -25,5 +25,11 @@ namespace CSVParser.Domain.Interfaces
             context.Employees.Add(employee);
             context.SaveChanges();
         }
+
+        public void UpdateEmployee(Employee employee)
+        {
+            context.Employees.Update(employee);
+            context.SaveChanges();
+        }
     }
 }

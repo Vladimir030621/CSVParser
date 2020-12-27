@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CSVParser.Domain;
 using CSVParser.Domain.Interfaces;
+using CSVParser.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -28,7 +29,7 @@ namespace CSVParser
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<EmployeeDBContext>(options => options.UseSqlServer(connection));
 
-            services.AddTransient<IEmployeeRepository, EmployeeRepository>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 
             services.AddControllersWithViews();
         }
