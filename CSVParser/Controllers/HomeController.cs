@@ -17,7 +17,7 @@ namespace CSVParser.Controllers
     {
         private readonly IEmployeeRepository context;
         private readonly IHostingEnvironment hostingEnvironment;
-        private static int count;
+        private static int countOfParsedEmployees;
         
         public HomeController(IHostingEnvironment environment, IEmployeeRepository context)
         {
@@ -31,28 +31,33 @@ namespace CSVParser.Controllers
         }
 
         [HttpPost]
-        public IActionResult Index(InputFile model)
+        public IActionResult Index(InputFile inputFile)
         {
             string filePath = "";
+            List<Employee> result;
 
-            if (model.Uploadedfile != null)
+            if (inputFile.Uploadedfile != null)
             {
-                filePath = SaveUploadedFile(model);
+                filePath = SaveUploadedFile(inputFile);
+
+                var engine = new FileHelperEngine<EmployeeViewModel>();
+
+                var parsedEmployees = engine.ReadFile(filePath).OrderBy(r => r.Surname).ToList();
+
+                DeleteUploadedFile(filePath);
+
+                result = SaveResults(parsedEmployees);
+
+                ViewData["countParsedEmployees"] = result.Count();
+
+                countOfParsedEmployees = result.Count();
+            }
+            else
+            {
+                return BadRequest();
             }
 
-            var engine = new FileHelperEngine<EmployeeViewModel>();
-
-            var result = engine.ReadFile(filePath).OrderBy(r => r.Surname).ToList();
-
-            DeleteUploadedFile(filePath);
-
-            var employees = SaveResults(result);
-
-            ViewData["count"] = employees.Count();
-
-            count = employees.Count();
-
-            return View("ShowResults", employees);
+            return View("ShowResults", result);
         }
 
 
@@ -67,6 +72,7 @@ namespace CSVParser.Controllers
             if (id != null)
             {
                 var employee = context.GetEmployees().FirstOrDefault(e => e.Id == id);
+
                 if (employee != null)
                 {
                     return View(employee);
@@ -82,7 +88,10 @@ namespace CSVParser.Controllers
 
             var employees = context.GetEmployees();
 
-            var result = employees.Skip(employees.Count() - count).Take(count).ToList();
+            var result = employees
+                .Skip(employees.Count() - countOfParsedEmployees)
+                .Take(countOfParsedEmployees)
+                .ToList();
            
             return View("ShowResults", result);
         }
@@ -114,9 +123,9 @@ namespace CSVParser.Controllers
             return result;
         }
 
-        private string SaveUploadedFile(InputFile model)
+        private string SaveUploadedFile(InputFile inputFile)
         {
-            var uniqueFileName = GetUniqueFileName(model.Uploadedfile.FileName);
+            var uniqueFileName = GetUniqueFileName(inputFile.Uploadedfile.FileName);
 
             var uploads = Path.Combine(hostingEnvironment.WebRootPath, "uploads");
 
@@ -124,7 +133,7 @@ namespace CSVParser.Controllers
 
             var newfile = new FileStream(filePath, FileMode.CreateNew);
 
-            model.Uploadedfile.CopyTo(newfile);
+            inputFile.Uploadedfile.CopyTo(newfile);
 
             newfile.Close();
 
