@@ -44,6 +44,8 @@ namespace CSVParser.Controllers
 
             var result = engine.ReadFile(filePath).OrderBy(r => r.Surname).ToList();
 
+            DeleteUploadedFile(filePath);
+
             var employees = SaveResults(result);
 
             ViewData["count"] = employees.Count();
@@ -127,6 +129,16 @@ namespace CSVParser.Controllers
             newfile.Close();
 
             return filePath;
+        }
+
+        private void DeleteUploadedFile(string filePath)
+        {
+            FileInfo fileInfo = new FileInfo(filePath);
+
+            if (fileInfo.Exists)
+            {
+                fileInfo.Delete();
+            }
         }
 
         private string GetUniqueFileName(string fileName)

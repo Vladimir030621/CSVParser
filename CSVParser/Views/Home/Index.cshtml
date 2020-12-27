@@ -1,10 +1,18 @@
 ﻿@model InputFile
 
 <form asp-action="Index" enctype="multipart/form-data">
+    <div class="validation" asp-validation-summary="ModelOnly"></div>
 
+    <label asp-for="Uploadedfile">Choose a file:</label>
     <input asp-for="Uploadedfile" />
     <span asp-validation-for="Uploadedfile"></span>
 
     <input type="submit" />
 </form>
 
+
+@section scripts{
+
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

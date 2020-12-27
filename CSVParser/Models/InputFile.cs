@@ -9,7 +9,7 @@ namespace CSVParser.Models
 {
     public class InputFile
     {
-        [Required]
+        [Required(ErrorMessage = "Choose a file")]
         public IFormFile Uploadedfile { set; get; }
     }
 }
