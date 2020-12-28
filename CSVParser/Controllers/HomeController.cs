@@ -39,11 +39,7 @@ namespace CSVParser.Controllers
             {
                 filePath = SaveUploadedFile(inputFile);
 
-                var engine = new FileHelperEngine<EmployeeViewModel>();
-
-                var parsedEmployees = engine.ReadFile(filePath).OrderBy(r => r.Surname).ToList();
-
-                DeleteUploadedFile(filePath);
+                List<EmployeeViewModel> parsedEmployees = FileParse(filePath);
 
                 result = SaveResults(parsedEmployees);
 
@@ -193,6 +189,26 @@ namespace CSVParser.Controllers
                       + "_"
                       + Guid.NewGuid().ToString().Substring(0, 4)
                       + Path.GetExtension(fileName);
+        }
+
+        #endregion
+
+
+        #region File parser
+        /// <summary>
+        /// File parser
+        /// </summary>
+        /// <param name="filePath"></param>
+        /// <returns></returns>
+        private List<EmployeeViewModel> FileParse(string filePath)
+        {
+            var engine = new FileHelperEngine<EmployeeViewModel>();
+
+            var parsedEmployees = engine.ReadFile(filePath).OrderBy(r => r.Surname).ToList();
+
+            DeleteUploadedFile(filePath);
+
+            return parsedEmployees;
         }
 
         #endregion

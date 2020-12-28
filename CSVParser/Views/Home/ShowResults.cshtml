@@ -1,31 +1,41 @@
 ﻿@model List<Employee>
 
-@if (ViewData["countParsedEmployees"] != null)
-{
-    <div>
-        <p>Count: @ViewData["countParsedEmployees"]</p>
-    </div>
+@{
+    ViewBag.Title = "Results";
 }
 
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6">
+            <input type="text" id="search" placeholder="Type to search">
+        </div>
+        <div class="col-sm-6">
+            @if (ViewData["countParsedEmployees"] != null)
+            {
+                <div id="counter">
+                    <p>Count: @ViewData["countParsedEmployees"]</p>
+                </div>
+            }
+        </div>
+    </div>
+</div>
 
-<input type="text" id="search" placeholder="Type to search">
-<br />
 
 <div class="text-center">
     <table id="myTable" class="table table-bordered table-striped">
         <tr>
-            <th onclick="sortTable(0)">PayrollNumber</th>
+            <th onclick="sortTable(0)">Payroll Number</th>
             <th onclick="sortTable(1)">Name</th>
             <th onclick="sortTable(2)">Surname</th>
-            <th onclick="sortTable(3)">DateOfBirth</th>
+            <th onclick="sortTable(3)">Date of Birth</th>
             <th onclick="sortTable(4)">Telephone</th>
             <th onclick="sortTable(5)">Mobile</th>
             <th onclick="sortTable(6)">Address</th>
-            <th onclick="sortTable(7)">Address2</th>
+            <th onclick="sortTable(7)">Address 2</th>
             <th onclick="sortTable(8)">Postcode</th>
             <th onclick="sortTable(9)">Email</th>
-            <th onclick="sortTable(10)">StartDate</th>
-
+            <th onclick="sortTable(10)">Start Date</th>
+            <th>Edit</th>
         </tr>
         @foreach (var employee in Model)
         {
@@ -44,12 +54,11 @@
                 <td><a asp-action="Edit" asp-controller="Home" asp-route-id="@employee.Id">Edit</a></td>
             </tr>
         }
-
     </table>
 </div>
 
 
-<script src="https://code.jquery.com/jquery-2.1.0.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
 
 
 <!-- Sorting table by column -->

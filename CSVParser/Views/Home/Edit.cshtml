@@ -1,68 +1,68 @@
 ﻿@model Employee
 
 @{
-    ViewBag.Title = "Редактирование пользователя";
+    ViewBag.Title = "Edit";
 }
 
-<form asp-action="edit" asp-controller="home" asp-route-id="@Model.Id">
+<form id="editform" asp-action="edit" asp-controller="home" asp-route-id="@Model.Id">
     <div class="validation" asp-validation-summary="ModelOnly"></div>
     <div class="form-group">
-        <label asp-for="PayrollNumber" class="control-label">PayrollNumber</label>
+        <label asp-for="PayrollNumber" class="control-label">Payroll Number:</label>
         <input type="text" asp-for="PayrollNumber" class="form-control" />
         <span asp-validation-for="PayrollNumber"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Name" class="control-label">Name</label>
+        <label asp-for="Name" class="control-label">Name:</label>
         <input type="text" asp-for="Name" class="form-control" />
         <span asp-validation-for="Name"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Surname" class="control-label">Surname</label>
+        <label asp-for="Surname" class="control-label">Surname:</label>
         <input type="text" asp-for="Surname" class="form-control" />
         <span asp-validation-for="Surname"></span>
     </div>
     <div class="form-group">
-        <label asp-for="DateOfBirth" class="control-label">DateOfBirth</label>
+        <label asp-for="DateOfBirth" class="control-label">Date of Birth:</label>
         <input type="text" asp-for="DateOfBirth" class="form-control" />
         <span asp-validation-for="DateOfBirth"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Telephone" class="control-label">Telephone</label>
+        <label asp-for="Telephone" class="control-label">Telephone:</label>
         <input type="text" asp-for="Telephone" class="form-control" />
         <span asp-validation-for="Telephone"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Mobile" class="control-label">Mobile</label>
+        <label asp-for="Mobile" class="control-label">Mobile:</label>
         <input type="number" asp-for="Mobile" class="form-control" />
         <span asp-validation-for="Mobile"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Address" class="control-label">Address</label>
+        <label asp-for="Address" class="control-label">Address:</label>
         <input type="text" asp-for="Address" class="form-control" />
         <span asp-validation-for="Address"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Address2" class="control-label">Address2</label>
+        <label asp-for="Address2" class="control-label">Address 2:</label>
         <input type="text" asp-for="Address2" class="form-control" />
         <span asp-validation-for="Address2"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Postcode" class="control-label">Postcode</label>
+        <label asp-for="Postcode" class="control-label">Postcode:</label>
         <input type="text" asp-for="Postcode" class="form-control" />
         <span asp-validation-for="Postcode"></span>
     </div>
     <div class="form-group">
-        <label asp-for="Email" class="control-label">Email</label>
+        <label asp-for="Email" class="control-label">Email:</label>
         <input type="text" asp-for="Email" class="form-control" />
         <span asp-validation-for="Email"></span>
     </div>
     <div class="form-group">
-        <label asp-for="StartDate" class="control-label">StartDate</label>
+        <label asp-for="StartDate" class="control-label">Start Date:</label>
         <input type="text" asp-for="StartDate" class="form-control" />
         <span asp-validation-for="StartDate"></span>
     </div>
     <div class="form-group">
-        <input type="submit" value="Save" class="btn btn-default" />
+        <input type="submit" value="Save" class="btn btn-primary" />
     </div>
 </form>
 

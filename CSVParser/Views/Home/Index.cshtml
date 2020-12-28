@@ -1,13 +1,19 @@
 ﻿@model InputFile
 
-<form asp-action="Index" enctype="multipart/form-data">
+@{
+    ViewBag.Title = "Home page";
+}
+
+<form class="form-horizontal" asp-action="Index" enctype="multipart/form-data">
     <div class="validation" asp-validation-summary="ModelOnly"></div>
-
-    <label asp-for="Uploadedfile">Choose a file:</label>
-    <input asp-for="Uploadedfile" />
-    <span asp-validation-for="Uploadedfile"></span>
-
-    <input type="submit" />
+    <div class="form-group" style="position: relative;">
+        <input id="fakeinput" type="button" value="Choose a file" />
+        <input id="fileinput" asp-for="Uploadedfile" type="file"/>
+        <span asp-validation-for="Uploadedfile"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Send" />
+    </div>
 </form>
 
 
